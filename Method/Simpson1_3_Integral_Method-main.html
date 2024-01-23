@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simpson 1/3</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,700;1,900&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+      }
+      nav {
+        background: black;
+        padding: 25px;
+      }
+
+      nav h1{
+        color: white;
+        font-size: 25px;
+      }
+      .container p span {
+        font-weight: 700;
+      }
+
+      .container {
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 80px;
+      }
+
+      .content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .content div {
+        padding: 20px;
+      }
+
+      .persamaan-container{
+        display: inline-flex;
+      }
+
+      .persamaan-content{
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 5px;
+        margin: 5px;
+      }
+
+      /* Tabel */
+      #numeris-table {
+        border: 1px solid black;
+        border-radius: 5px;
+      }
+
+      #numeris-table td {
+        border: 1px solid black;
+      }
+
+      #numeris-table #i-td {
+        padding: 10px;
+      }
+
+      #numeris-table #fi-td {
+        padding: 10px 20px;
+      }
+
+      #numeris-table #xi-td {
+        padding: 10px 20px;
+      }
+
+      #numeris-table #fxi-td {
+        padding: 10px 50px;
+      }
+
+      #numeris-table #fxi_danseterusnya-td{
+        padding: 10px 60px; 
+      }
+
+      /* footer */
+      footer {
+        background: black;
+        padding: 25px;
+        color: white;
+      }
+      footer h1{
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav><h1>Simpson 1/3</h1></nav>
+    <div class="container">
+      <!-- Soal -->
+      <p>Hitunglah integral dari fungsi berikut dengan perhitungan analitis dan numeris integrasi numerik metode Simpson 1/3 dan sertakan nilai error dari metode tersebut <span>(KETENTUAN SOAL, BERADAPTASILAH MANDIRI)</span>
+      </p>
+      <!-- persamaan -->
+      <h3>Persamaan : </h3>
+      <p>Tinggal Pilih</p>
+      <div class="persamaan-container">
+        <div class="persamaan-content" id="pc1">
+          <p>f(x) = e <sup>-x<sup>2</sup></sup>Sin(2ln(x+1))</p>
+          <input type="button" name="input-button" value="Persamaan tugas 4" onclick="main(persamaanTugas4, removeFor_pc1)">
+        </div>
+        <div class="persamaan-content" id="pc2">
+          <p>f(x) = e<sup>-x</sup>sin(2x)+1</p>
+          <input type="button" name="input-button" value="persamaan 2" onclick="main(persamaan2, removeFor_pc2)"></p>
+        </div>
+        <div class="persamaan-content" id="pc3">
+          <p>f(x) = 2x-x<sup>e</sup></p>
+          <input type="button" name="input-button" value="persamaan 3" onclick="main(persamaan3, removeFor_pc3)"></p>
+        </div>
+        <div class="persamaan-content" id="pc4">
+          <p>f(x) = 2e<sup>x-1</sup></p>
+          <input type="button" name="input-button" value="persamaan 4" onclick="main(persamaan4, removeFor_pc4)"></p>
+        </div>
+        <div class="persamaan-content" id="pc5">
+          <p>f(x) = 3e<sup>2x-1</sup></p>
+          <input type="button" name="input-button" value="persamaan 5" onclick="main(persamaan5, removeFor_pc5)"></p>
+        </div>
+        <div class="persamaan-content" id="pc6">
+          <p>f(x) = x+e<sup>x</sup></p>
+          <input type="button" name="input-button" value="persamaan 6" onclick="main(persamaan6, removeFor_pc6)"></p>
+        </div>
+        <div class="persamaan-content" id="pc7">
+          <p>f(x) = 2x+e<sup>x</sup></p>
+          <input type="button" name="input-button" value="persamaan 7" onclick="main(persamaan7, removeFor_pc7)"></p>
+        </div>
+      </div>
+      <!-- ngatur a(batas bawah), b(batas atas), h(jarak) -->
+      <div class="input">
+        <label>a</label>
+        <input type="text" id="a-input">
+        <label>; b</label>
+        <input type="text" id="b-input">
+        <label>; h</label>
+        <input type="text" id="h-input">
+        <input type="button" name="input-button" value="Hasil" onclick="main()">
+      </div>
+      <br>
+      <!-- vvv Jawaban vvv -->
+      <p>Jawab : </p>
+      <p>n = (b-a)/h</p>
+      <p>n = <label id="b"></label>- <label id="a"></label>/ <label id="h"></label>
+      </p>
+      <p>n = <label id="n"></label>
+      </p>
+      <div class="content">
+        <!-- Operasi Analitis -->
+        <div class="analitis-field">
+          <h1>Analitis</h1>
+          <p>*Rumus*</p>
+          <p>= f(batas atas) - f(batas bawah)</p>
+          <p>= <label id="fb"></label> - <label id="fa"></label>
+          </p>
+          <p>= <input type="textbox" id="analitis-output">
+          </p>
+        </div>
+        <!-- Operasi Numeris -->
+        <div class="numeris-field">
+          <h1>Numeris</h1>
+          <p>*Rumus*</p>
+          <p>= <label id="h-numeris"></label> * <label id="jumlah-numeris"></label></p>
+          <p>= <input type="textbox" id="numeris-output2">
+          </p>
+        </div>
+        <!-- Operasi Error -->
+        <div class="error-field">
+          <h1>ERROR</h1>
+          <label>ERROR = |Numeris - Analitis|</label>
+          <p>= | <label id="numeris-result"></label> - <label id="analitis-result"></label>| </p>
+          <p>= <input type="textbox" id="error-output">
+          </p>
+        </div>
+      </div>
+      <br>
+      <!-- Tabel Perhitungan Numeris -->
+      <div class="numeris-table-div">
+        <table id="numeris-table">
+          <p>Tabel Perhitungan Numeris : </p>
+          <tr>
+            <td id="i-td">i</td>
+            <td id="fi-td">f(i)</td>
+            <td id="xi-td">xi</td>
+            <td id="fxi-td">f(xi)</td>
+          </tr>
+        </table>
+        <div class="content-jumlah">
+          <div class="genap-field">
+            <h1>Genap</h1>
+            <p>*Rumus*</p>
+            <p>= <label id="f-genap"></label></p>
+            <p>= <input type="textbox" id="jumlahGenap-output"></p>
+          </div>
+          <div class="ganjil-field">
+            <h1>Ganjil</h1>
+            <p>*Rumus*</p>
+            <p>= <label id="f-ganjil"></label></p>
+            <p>= <input type="textbox" id="jumlahGanjil-output"></p>
+          </div>
+          <div class="jumlah-field">
+            <h1>Jumlah</h1>
+            <p>*Rumus*</p>
+            <p>= <label id="f0"></label> + 4 * <label id="jumlahGanjil-jumlah"></label> + 2 * <label id="jumlahGenap-jumlah"></label> + <label id="fn"></label></p>
+            <p>= <input type="textbox" id="jumlahNumeris-output"></p>
+          </div>
+        </div>
+      </div>
+      <!-- ^^^ Jawaban ^^^ -->
+      <br>
+    </div>
+    <footer>
+      <div class="footer-items">
+        <h1>Yang Mulia Teguh</h1>
+        <p>© 2022 Yang Mulia Teguh. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script>
+      /* Kalo mau ganti fungsi, bisa atur disini */
+      function persamaanTugas4(x) {
+        var asu = Math.pow(x,2);
+        return Math.pow(Math.E, -asu)*Math.sin(2*Math.log(x+1));
+      }
+
+      function persamaan2(x) {
+        return Math.pow(Math.E, -x)*Math.sin(2*x)+1;
+      }
+
+      function persamaan3(x){
+        return (2*x)-Math.pow(x,Math.E);
+      }
+
+      function persamaan4(x){
+        return 2*Math.pow(Math.E,x-1);
+      }
+
+      function persamaan5(x){
+        return 3*Math.pow(Math.E,2*x-1);
+      }
+
+      function persamaan6(x){
+        return x+Math.pow(Math.E,x);
+      }
+
+      function persamaan7(x){
+        return 2*x+Math.pow(Math.E,x);
+      }
+
+      /* Kalo mau ganti fungsi, bisa atur disini */
+
+      function removeFor_pc1(){
+        var pc2 = document.getElementById("pc2"),
+        pc3 = document.getElementById("pc3"),
+        pc4 = document.getElementById("pc4"),
+        pc5 = document.getElementById("pc5"),
+        pc6 = document.getElementById("pc6"),
+        pc7 = document.getElementById("pc7");
+        pc2.remove();
+        pc3.remove();
+        pc4.remove();
+        pc5.remove();
+        pc6.remove();
+        pc7.remove();
+      }
+
+      function removeFor_pc2(){
+        var pc1 = document.getElementById("pc1"),
+        pc3 = document.getElementById("pc3"),
+        pc4 = document.getElementById("pc4"),
+        pc5 = document.getElementById("pc5"),
+        pc6 = document.getElementById("pc6"),
+        pc7 = document.getElementById("pc7");
+        pc1.remove();
+        pc3.remove();
+        pc4.remove();
+        pc5.remove();
+        pc6.remove();
+        pc7.remove();
+      }
+
+      function removeFor_pc3(){
+        var pc1 = document.getElementById("pc1"),
+        pc2 = document.getElementById("pc2"),
+        pc4 = document.getElementById("pc4"),
+        pc5 = document.getElementById("pc5"),
+        pc6 = document.getElementById("pc6"),
+        pc7 = document.getElementById("pc7");
+        pc1.remove();
+        pc2.remove();
+        pc4.remove();
+        pc5.remove();
+        pc6.remove();
+        pc7.remove();
+      }
+
+      function removeFor_pc4(){
+        var pc1 = document.getElementById("pc1"),
+        pc2 = document.getElementById("pc2"),
+        pc3 = document.getElementById("pc3"),
+        pc5 = document.getElementById("pc5"),
+        pc6 = document.getElementById("pc6"),
+        pc7 = document.getElementById("pc7");
+        pc1.remove();
+        pc2.remove();
+        pc3.remove();
+        pc5.remove();
+        pc6.remove();
+        pc7.remove();
+      }
+
+      function removeFor_pc5(){
+        var pc1 = document.getElementById("pc1"),
+        pc2 = document.getElementById("pc2"),
+        pc3 = document.getElementById("pc3"),
+        pc4 = document.getElementById("pc4"),
+        pc6 = document.getElementById("pc6"),
+        pc7 = document.getElementById("pc7");
+        pc1.remove();
+        pc2.remove();
+        pc3.remove();
+        pc4.remove();
+        pc6.remove();
+        pc7.remove();
+      }
+
+      function removeFor_pc6(){
+        var pc1 = document.getElementById("pc1"),
+        pc2 = document.getElementById("pc2"),
+        pc3 = document.getElementById("pc3"),
+        pc4 = document.getElementById("pc4"),
+        pc5 = document.getElementById("pc5"),
+        pc7 = document.getElementById("pc7");
+        pc1.remove();
+        pc2.remove();
+        pc3.remove();
+        pc4.remove();
+        pc5.remove();
+        pc7.remove();
+      }
+
+      function removeFor_pc7(){
+        var pc1 = document.getElementById("pc1"),
+        pc2 = document.getElementById("pc2"),
+        pc3 = document.getElementById("pc3"),
+        pc4 = document.getElementById("pc4"),
+        pc5 = document.getElementById("pc5"),
+        pc6 = document.getElementById("pc6");
+        pc1.remove();
+        pc2.remove();
+        pc3.remove();
+        pc4.remove();
+        pc5.remove();
+        pc6.remove();
+      }
+
+      function main(fx, REMOVE) {
+        REMOVE();
+        /* ngambil nilai a, b, h */
+        var a = document.getElementById("a-input").value;
+        var b = document.getElementById("b-input").value;
+        var h = document.getElementById("h-input").value;
+        /* mencari nilai n*/
+        let n = (b - a) / h;
+        /* output untuk pencarian n */
+        document.getElementById("b").innerHTML = b;
+        document.getElementById("a").innerHTML = a;
+        document.getElementById("h").innerHTML = h;
+        document.getElementById("n").innerHTML = parseInt(n);
+        var resultAnalitis = fx(b) - fx(a);
+        /* Output pencarian nilai analitis */
+        var fa = fx(a);
+        var fb = fx(b);
+        document.getElementById("fa").innerHTML = fa.toFixed(9);
+        document.getElementById("fb").innerHTML = fb.toFixed(9);
+        document.getElementById("analitis-output").value = resultAnalitis.toFixed(9);
+
+        /* operasi pencarian nilai untuk tabel dan output nya serta yang lain lain*/
+        let x = parseFloat(a);
+        let jumlahNumeris = 0;
+        var jumlahGanjil = 0;
+        var jumlahGenap = 0;
+        var fzero;
+        var fn;
+        for (var i = 0; i <= n; i++) {
+          var table = document.getElementById("numeris-table");
+          var row = table.insertRow(-1);
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+          if(i == 0){
+            fzero = fx(x);
+          }else if(i == parseInt(n)){
+            fn = fx(x);
+          }
+          if(i % 2 == 0 && i != 0 && i != parseInt(n)){
+            document.getElementById("f-genap").innerHTML += "f("+i+")+";
+            jumlahGenap += fx(x);
+          }else if(i % 2 != 0 && i != 0 && i != parseInt(n)){
+            document.getElementById("f-ganjil").innerHTML += "f("+i+")+";
+            jumlahGanjil += fx(x);
+          }
+          cell1.innerHTML = i;
+          cell2.innerHTML = "f(" + i + ")";
+          cell3.innerHTML = x.toFixed(1);
+          cell4.innerHTML = fx(x).toFixed(9);
+          x += parseFloat(h);
+        }
+
+        jumlahNumeris = fzero +(4*jumlahGanjil)+(2*jumlahGenap)+fn;
+        var hbagi3 = h/3;
+        var resultNumeris = jumlahNumeris * (h/3);
+        var error = resultNumeris - resultAnalitis;
+        /* Output pencarian nilai numeris */
+        document.getElementById("h-numeris").innerHTML = hbagi3.toFixed(2);
+        document.getElementById("jumlah-numeris").innerHTML = jumlahNumeris.toFixed(9);
+        document.getElementById("numeris-output2").value = resultNumeris.toFixed(9);
+        /* Output pencarian nilai Error */
+        document.getElementById("numeris-result").innerHTML = resultNumeris.toFixed(9);
+        document.getElementById("analitis-result").innerHTML = resultAnalitis.toFixed(9);
+        document.getElementById("error-output").value = error.toFixed(9);
+        /* Output Genap */
+        document.getElementById("jumlahGenap-output").value = jumlahGenap.toFixed(9);
+        /* Output Ganjil */
+        document.getElementById("jumlahGanjil-output").value = jumlahGanjil.toFixed(9);
+        /* Output Jumlah */
+        document.getElementById("f0").innerHTML = fzero.toFixed(9);
+        document.getElementById("fn").innerHTML = fn.toFixed(9);
+        document.getElementById("jumlahGenap-jumlah").innerHTML = jumlahGenap.toFixed(9);
+        document.getElementById("jumlahGanjil-jumlah").innerHTML = jumlahGanjil.toFixed(9);
+        document.getElementById("jumlahNumeris-output").value = jumlahNumeris.toFixed(9);
+      }
+    </script>
+  </body>
+</html>
